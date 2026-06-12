@@ -511,6 +511,17 @@ soundBtn.addEventListener('click', () => {
 audio = startFire()
 setSoundLabel(true)
 
+// the fire only burns while you're looking at it: mute in background tabs,
+// kill outright when leaving the page
+document.addEventListener('visibilitychange', () => {
+  if (!audio) return
+  if (document.hidden) audio.ctx.suspend()
+  else audio.ctx.resume()
+})
+window.addEventListener('pagehide', () => {
+  if (audio) audio.ctx.close()
+})
+
 /* ============================== clock ================================ */
 
 const clockEl = document.getElementById('clock')
