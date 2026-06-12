@@ -419,11 +419,17 @@ viewSphereBtn.addEventListener('click', () => {
 let audio = null
 const soundBtn = document.getElementById('sound')
 
+function setSoundLabel(on) {
+  soundBtn.textContent = on ? 'SOUND [ON]' : 'SOUND [OFF]'
+  soundBtn.setAttribute('aria-pressed', String(on))
+}
+
 function startFire() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)()
   const master = ctx.createGain()
   master.gain.value = 0.0
   master.connect(ctx.destination)
+  const handle = { ctx, master }
 
   // bed: looped brown noise through a low rumble filter
   const len = ctx.sampleRate * 2
@@ -446,7 +452,7 @@ function startFire() {
 
   // crackle: short bandpassed bursts at random intervals
   function pop() {
-    if (!audio) return
+    if (audio !== handle) return
     const dur = 0.03 + Math.random() * 0.05
     const src = ctx.createBufferSource()
     const pbuf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate)
@@ -464,23 +470,46 @@ function startFire() {
   }
   pop()
 
-  gsap.to(master.gain, { value: 0.16, duration: 1.2, ease: 'power1.out' })
-  return { ctx, master }
+  master.gain.setValueAtTime(0, ctx.currentTime)
+  master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 1.2)
+
+  // autoplay policy: a context created without a gesture starts suspended,
+  // so playback actually begins on the first interaction
+  if (ctx.state === 'suspended') {
+    const resume = () => {
+      ctx.resume()
+      window.removeEventListener('pointerdown', resume)
+      window.removeEventListener('keydown', resume)
+    }
+    window.addEventListener('pointerdown', resume)
+    window.addEventListener('keydown', resume)
+  }
+  return handle
+}
+
+function stopFire() {
+  const a = audio
+  audio = null
+  const t = a.ctx.currentTime
+  a.master.gain.cancelScheduledValues(t)
+  a.master.gain.setValueAtTime(a.master.gain.value, t)
+  a.master.gain.linearRampToValueAtTime(0, t + 0.4)
+  setTimeout(() => a.ctx.close(), 600)
 }
 
 soundBtn.addEventListener('click', () => {
   if (audio) {
-    const a = audio
-    audio = null
-    gsap.to(a.master.gain, { value: 0, duration: 0.5, onComplete: () => a.ctx.close() })
-    soundBtn.textContent = 'SOUND [OFF]'
-    soundBtn.setAttribute('aria-pressed', 'false')
+    stopFire()
+    setSoundLabel(false)
   } else {
     audio = startFire()
-    soundBtn.textContent = 'SOUND [ON]'
-    soundBtn.setAttribute('aria-pressed', 'true')
+    setSoundLabel(true)
   }
 })
+
+// sound is on by default; the toggle turns it off
+audio = startFire()
+setSoundLabel(true)
 
 /* ============================== clock ================================ */
 
