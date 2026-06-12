@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ember &amp; Oak | The menu, in the round</title>
+    <meta name="description" content="An immersive gallery of the Ember & Oak menu. Drag to look around. Demo website." />
+    <meta name="theme-color" content="#0a0908" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;500&family=Young+Serif&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="scene" aria-label="Menu gallery. Drag to look around, click a tile to open it."></div>
+
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="chrome chrome-top">
+      <a class="brand" href="https://vicky-16032005.github.io/ember-and-oak/" title="Ember &amp; Oak home">
+        <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+          <circle cx="32" cy="40" r="15" fill="none" stroke="currentColor" stroke-width="4" />
+          <circle cx="32" cy="17" r="5" fill="currentColor" />
+        </svg>
+        <span class="sr-only">Ember &amp; Oak</span>
+      </a>
+
+      <button id="sound" class="mono-label" aria-pressed="false">SOUND [OFF]</button>
+
+      <p class="blurb mono-label">
+        EMBER &amp; OAK IS A WOOD-FIRED NEIGHBORHOOD BISTRO. THIS IS TONIGHT'S MENU, IN THE ROUND.
+      </p>
+
+      <div class="where mono-label">
+        <span>214 COAL STREET</span>
+        <span id="clock">–</span>
+        <span>OPEN UNTIL 23:00</span>
+      </div>
+
+      <a class="pill pill-solid" href="https://vicky-16032005.github.io/ember-and-oak/#reserve">Reserve</a>
+    </header>
+
+    <footer class="chrome chrome-bottom">
+      <div class="views">
+        <button id="view-sphere" class="view-btn is-active" aria-label="Gallery view" aria-pressed="true">
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><g fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></g></svg>
+        </button>
+        <button id="view-list" class="view-btn" aria-label="List view" aria-pressed="false">
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><g fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="12" width="14" height="2" rx="1"/></g></svg>
+        </button>
+      </div>
+
+      <nav class="pillnav" aria-label="Site">
+        <span class="pillnav-item is-active">Menu</span>
+        <a class="pillnav-item" href="https://vicky-16032005.github.io/ember-and-oak/#craft">About</a>
+        <a class="pillnav-item" href="https://vicky-16032005.github.io/ember-and-oak/#reserve">Visit</a>
+      </nav>
+    </footer>
+
+    <section id="list" class="overlay" hidden aria-label="Menu as a list">
+      <div class="list-inner" id="list-rows"></div>
+    </section>
+
+    <section id="detail" class="overlay" hidden aria-label="Dish detail">
+      <button id="detail-close" class="mono-label">[ESC] BACK TO THE ROOM</button>
+      <div class="detail-grid">
+        <figure class="detail-media"><img id="detail-img" alt="" /></figure>
+        <div class="detail-copy">
+          <p class="mono-label" id="detail-course">MAIN</p>
+          <h1 id="detail-name">Dish name</h1>
+          <p id="detail-desc" class="detail-desc">Description</p>
+          <p class="mono-label" id="detail-meta">WOOD-FIRED</p>
+          <a class="pill pill-solid" href="https://vicky-16032005.github.io/ember-and-oak/#reserve">Reserve a table</a>
+        </div>
+      </div>
+    </section>
+
+    <div id="intro" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="56" height="56">
+        <circle cx="32" cy="40" r="15" fill="none" stroke="#EDE7DD" stroke-width="4" />
+        <circle cx="32" cy="17" r="5" fill="#C75A1E" />
+      </svg>
+      <p class="mono-label">EMBER &amp; OAK</p>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
