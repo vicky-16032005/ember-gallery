@@ -580,7 +580,7 @@ function frame() {
   view.lat += (target.lat - view.lat) * 0.075
 
   // slow drift when idle
-  if (!REDUCED && !dragging && !overlayOpen() && performance.now() - lastInteraction > 4000) {
+  if (!REDUCED && !dragging && !overlayOpen() && performance.now() - lastInteraction > 1200) {
     target.lon += 0.00035
   }
 
